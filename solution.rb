@@ -26,7 +26,6 @@ def aliens_aboard_fastest_spaceship
   SELECT aliens.name FROM aliens INNER JOIN spaceships ON aliens.spaceship_id = spaceship.id ORDER BY spaceship.speed DESC LIMIT 1
 end
 
-
 def aliens_and_spaceships
   # Return a list of all aliens and the spaceship they belong to
   SELECT aliens.name FROM aliens JOIN spaceships ON aliens.spaceship_id = spaceships.id WHERE spaceships.speed = (SELECT MAX(spaceships.speed) FROM spaceships);
@@ -79,10 +78,12 @@ end
 
 def order_planets_by_alien_count
    # order the planets based on how many aliens are from that planet
+   SELECT planets.name, count(aliens.id) FROM planets JOIN spaceships ON planets.id = spaceships.planet_id JOIN aliens ON aliens.spaceship_id = spaceships.id GROUP BY planets.id ORDER BY COUNT(aliens.id)
 end
 
 def order_planets_by_old_alien_count
    ## MOST DIFFICULT 
    # order the planets based on how many aliens over the age of 100 are from that planet
+   SELECT planets.name, COUNT(aliens.id) FROM planets JOIN spaceships ON planets.id = spaceships.planet_id JOIN aliens ON aliens.spaceship_id = spaceships.id ORDER BY COUNT(aliens.id) HAVING aliens.age > 100SELECT planets.name, COUNT(aliens.id) FROM planets JOIN spaceships ON planets.id = spaceships.planet_id JOIN aliens ON aliens.spaceship_id = spaceships.id WHERE aliens.age > 100 GROUP BY planets.name ORDER BY COUNT(aliens.id) 
 end
 
